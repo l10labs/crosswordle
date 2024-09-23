@@ -1,0 +1,11 @@
+kind = "DojoContract"
+class_hash = "0x6fa1edc9974f31a40949316fae694885856f50f64df2de3f821394e9926ba6f"
+original_class_hash = "0x6fa1edc9974f31a40949316fae694885856f50f64df2de3f821394e9926ba6f"
+base_class_hash = "0x0"
+abi = "manifests/dev/base/abis/contracts/crosswordle-config_system-42e758f3.json"
+reads = []
+writes = []
+init_calldata = []
+tag = "crosswordle-config_system"
+systems = []
+manifest_name = "crosswordle-config_system-42e758f3"

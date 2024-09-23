@@ -1,0 +1,22 @@
+kind = "DojoModel"
+class_hash = "0x326064dfb191d093ede92a2cf5af07a9aef2efbf1e7452a55cfea7e43c8ca82"
+original_class_hash = "0x326064dfb191d093ede92a2cf5af07a9aef2efbf1e7452a55cfea7e43c8ca82"
+abi = "manifests/dev/base/abis/models/crosswordle-Letter-211c952b.json"
+tag = "crosswordle-Letter"
+qualified_path = "crosswordle::models::letter::letter"
+manifest_name = "crosswordle-Letter-211c952b"
+
+[[members]]
+name = "id"
+type = "u32"
+key = true
+
+[[members]]
+name = "player_address"
+type = "ContractAddress"
+key = false
+
+[[members]]
+name = "letter"
+type = "felt252"
+key = false
