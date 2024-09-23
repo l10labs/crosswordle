@@ -12,4 +12,9 @@ impl StoreImpl of StoreTrait {
     fn new(world: IWorldDispatcher) -> Store {
         Store { world: world }
     }
+    
+    #[inline]
+    fn set_letter(self: Store, letter: Letter) {
+        set!(self.world, (letter))
+    }
 }

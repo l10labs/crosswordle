@@ -17,9 +17,7 @@ mod errors {
 #[generate_trait]
 impl LetterImpl of LetterTrait {
     #[inline]
-    fn new(position: u8, value: felt252) -> Letter {
-        let placed_by = get_caller_address();
-
+    fn new(position: u8, value: felt252, placed_by: ContractAddress) -> Letter {
         let min_value: u256 = 'a';
         let max_value: u256 = 'z';
         let value: u256 = value.into();
