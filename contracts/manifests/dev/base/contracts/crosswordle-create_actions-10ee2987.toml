@@ -1,0 +1,16 @@
+kind = "DojoContract"
+class_hash = "0x2e9f54cc180cc98757b078ee9fd82a1a455cac4cd471ebdf0824f626ca1a427"
+original_class_hash = "0x2e9f54cc180cc98757b078ee9fd82a1a455cac4cd471ebdf0824f626ca1a427"
+base_class_hash = "0x0"
+abi = "manifests/dev/base/abis/contracts/crosswordle-create_actions-10ee2987.json"
+reads = []
+writes = []
+init_calldata = []
+tag = "crosswordle-create_actions"
+systems = [
+    "create_letter",
+    "create_word",
+    "create_hidden_word",
+    "solve_letter",
+]
+manifest_name = "crosswordle-create_actions-10ee2987"

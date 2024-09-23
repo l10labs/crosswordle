@@ -1,0 +1,17 @@
+kind = "DojoModel"
+class_hash = "0x54937f0cc0f11d0de7ff5ab1349e924c4425e204e9015e645dfc1f71e9cdf9f"
+original_class_hash = "0x54937f0cc0f11d0de7ff5ab1349e924c4425e204e9015e645dfc1f71e9cdf9f"
+abi = "manifests/dev/base/abis/models/crosswordle-LetterStatus-32845090.json"
+tag = "crosswordle-LetterStatus"
+qualified_path = "crosswordle::models::board::letter_status"
+manifest_name = "crosswordle-LetterStatus-32845090"
+
+[[members]]
+name = "position"
+type = "u8"
+key = true
+
+[[members]]
+name = "status"
+type = "Status"
+key = false

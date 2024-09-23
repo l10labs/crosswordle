@@ -1,0 +1,22 @@
+kind = "DojoModel"
+class_hash = "0x75fc567be4feb80d8a0f4082a654885a801c0215dc2df8bb9d73937bbcf66ae"
+original_class_hash = "0x75fc567be4feb80d8a0f4082a654885a801c0215dc2df8bb9d73937bbcf66ae"
+abi = "manifests/dev/base/abis/models/crosswordle-Letter-211c952b.json"
+tag = "crosswordle-Letter"
+qualified_path = "crosswordle::models::board::letter"
+manifest_name = "crosswordle-Letter-211c952b"
+
+[[members]]
+name = "position"
+type = "u8"
+key = true
+
+[[members]]
+name = "hash"
+type = "felt252"
+key = false
+
+[[members]]
+name = "placed_by"
+type = "ContractAddress"
+key = false
