@@ -1,0 +1,18 @@
+[package]
+cairo-version = "=2.7.0"
+name = "rpg"
+version = "0.0.0"
+
+[cairo]
+sierra-replace-ids = true
+
+[scripts]
+migrate = "sozo build && sozo migrate apply"
+katana = "katana --disable-fee  --allowed-origins \"*\""
+torii = "torii --world 0xa0e68ad49ebbe84c0a62037286496d3f0834f0ea25db2bb6717b4b5e7e078b --database indexer.db --allowed-origins \"*\""
+torii-nodb = "torii --world 0xa0e68ad49ebbe84c0a62037286496d3f0834f0ea25db2bb6717b4b5e7e078b --allowed-origins \"*\""
+
+[dependencies]
+dojo = { git = "https://github.com/dojoengine/dojo", tag = "v1.0.0-alpha.11" }
+
+[[target.dojo]]

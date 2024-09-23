@@ -1,2 +1,5 @@
 frontend/target
 frontend/dist
+
+contracts/manifests
+contracts/target
