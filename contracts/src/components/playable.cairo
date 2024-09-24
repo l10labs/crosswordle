@@ -158,6 +158,8 @@ mod PlayableComponent {
                 let position: u8 = index.try_into().unwrap();
                 let mut letter = LetterTrait::new_wordle(player_id, position, word.span()[index].clone());
                 store.set_letter(letter);
+                let color = LetterTrait::init_color(position);
+                store.set_color(color);
                 index += 1;
             }
         }

@@ -37,3 +37,12 @@ pub struct Letter {
     pub placed_by: ContractAddress,
     pub value: felt252,
 }
+
+#[derive(Copy, Drop, Serde)]
+#[dojo::model]
+pub struct Color {
+    #[key]
+    pub position: u8,
+    pub color: u8,
+    // 0: gray, 1: yellow, 2: green
+}

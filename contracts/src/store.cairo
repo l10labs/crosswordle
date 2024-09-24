@@ -9,6 +9,8 @@ use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 use rpg::models::player::Player;
 use rpg::models::dungeon::Dungeon;
 use rpg::models::index::Letter;
+use rpg::models::index::Color;
+
 
 // Structs
 
@@ -64,5 +66,10 @@ impl StoreImpl of StoreTrait {
     #[inline]
     fn get_letter(self: Store, position: u8, is_user_guess: bool) -> Letter {
         get!(self.world, (position, is_user_guess), (Letter))
+    }
+
+    #[inline]
+    fn set_color(self: Store, color: Color) {
+        set!(self.world, (color))
     }
 }

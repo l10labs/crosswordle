@@ -6,6 +6,8 @@ use starknet::ContractAddress;
 // Inernal imports
 
 use rpg::models::index::Letter;
+use rpg::models::index::Color;
+
 
 mod errors {
     // const PLAYER_NOT_EXIST: felt252 = 'Player: does not exist';
@@ -31,6 +33,11 @@ impl LetterImpl of LetterTrait {
         assert(position < 5, errors::POSITION_NOT_WITHIN_BOUNDS);
 
         Letter { placed_by, position, value, is_user_guess: false }
+    }
+
+    fn init_color(position: u8) -> Color {
+        assert(position < 5, errors::POSITION_NOT_WITHIN_BOUNDS);
+        Color { position, color: 0 }
     }
 
     fn new_guess(placed_by: ContractAddress, position: u8, value: felt252) -> Letter {
