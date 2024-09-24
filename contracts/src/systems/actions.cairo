@@ -14,6 +14,7 @@ trait IActions<TContractState> {
     fn move(self: @TContractState, direction: u8);
     fn attack(self: @TContractState);
     fn heal(self: @TContractState, quantity: u8);
+    fn create_letter(self: @TContractState, position: u8, value: felt252);
 }
 
 // Contracts
@@ -72,6 +73,10 @@ mod actions {
 
         fn heal(self: @ContractState, quantity: u8) {
             self.playable.heal(self.world(), quantity)
+        }
+
+        fn create_letter(self: @ContractState, position: u8, value: felt252) {
+            self.playable.create_letter(self.world(), position, value)
         }
     }
 }

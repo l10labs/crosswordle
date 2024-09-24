@@ -8,6 +8,7 @@ use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 
 use rpg::models::player::Player;
 use rpg::models::dungeon::Dungeon;
+use rpg::models::index::Letter;
 
 // Structs
 
@@ -53,5 +54,10 @@ impl StoreImpl of StoreTrait {
     #[inline]
     fn set_dungeon(self: Store, dungeon: Dungeon) {
         set!(self.world, (dungeon))
+    }
+
+    #[inline]
+    fn set_letter(self: Store, letter: Letter) {
+        set!(self.world, (letter))
     }
 }

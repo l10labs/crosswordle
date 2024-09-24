@@ -12,6 +12,7 @@ mod models {
     mod index;
     mod dungeon;
     mod player;
+    mod letter;
 }
 
 mod components {

@@ -18,6 +18,8 @@ mod PlayableComponent {
 
     use rpg::constants;
     use rpg::store::{Store, StoreTrait};
+    use rpg::models::letter::{Letter, LetterTrait};
+
     use rpg::models::player::{Player, PlayerTrait, PlayerAssert};
     use rpg::models::dungeon::{Dungeon, DungeonTrait, DungeonAssert};
     use rpg::types::role::Role;
@@ -128,6 +130,19 @@ mod PlayableComponent {
 
             // [Effect] Update state
             store.set_player(player);
+        }
+
+        fn create_letter(
+            self: @ComponentState<TContractState>,
+            world: IWorldDispatcher,
+            position: u8,
+            value: felt252,
+        ) {
+            let store: Store = StoreTrait::new(world);
+            let player_id = get_caller_address();
+            let mut letter = LetterTrait::new(player_id, position, value);
+
+            store.set_letter(letter);
         }
     }
 }

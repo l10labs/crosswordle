@@ -1,3 +1,5 @@
+use starknet::ContractAddress;
+
 #[derive(Copy, Drop, Serde)]
 #[dojo::model]
 pub struct Player {
@@ -23,4 +25,13 @@ pub struct Dungeon {
     pub damage: u8,
     pub health: u8,
     pub reward: u16,
+}
+
+#[derive(Copy, Drop, Serde)]
+#[dojo::model]
+pub struct Letter {
+    pub placed_by: ContractAddress,
+    #[key]
+    pub position: u8,
+    pub value: felt252,
 }
