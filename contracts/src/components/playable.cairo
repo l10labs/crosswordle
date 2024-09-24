@@ -144,5 +144,22 @@ mod PlayableComponent {
 
             store.set_letter(letter);
         }
+
+        fn create_word(
+            self: @ComponentState<TContractState>,
+            world: IWorldDispatcher,
+            word: [felt252; 5],
+        ) {
+            let store: Store = StoreTrait::new(world);
+            let player_id = get_caller_address();
+
+            let mut index = 0;
+            while index < 5 {
+                let position: u8 = index.try_into().unwrap();
+                let mut letter = LetterTrait::new(player_id, position, word.span()[index].clone());
+                store.set_letter(letter);
+                index += 1;
+            }
+        }
     }
 }

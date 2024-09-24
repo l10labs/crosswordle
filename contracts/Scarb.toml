@@ -11,6 +11,8 @@ migrate = "sozo build && sozo migrate apply"
 katana = "katana --disable-fee  --allowed-origins \"*\" --dev"
 torii = "torii --world 0xa0e68ad49ebbe84c0a62037286496d3f0834f0ea25db2bb6717b4b5e7e078b --database indexer.db --allowed-origins \"*\""
 torii-nodb = "torii --world 0xa0e68ad49ebbe84c0a62037286496d3f0834f0ea25db2bb6717b4b5e7e078b --allowed-origins \"*\""
+single-letter = "sozo execute actions create_letter -c 1,sstr:'z'"
+single-word = "sozo execute actions create_word -c sstr:'s',sstr:'w',sstr:'o',sstr:'r',sstr:'d'"
 
 [dependencies]
 dojo = { git = "https://github.com/dojoengine/dojo", tag = "v1.0.0-alpha.11" }

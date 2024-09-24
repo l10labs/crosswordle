@@ -15,6 +15,8 @@ trait IActions<TContractState> {
     fn attack(self: @TContractState);
     fn heal(self: @TContractState, quantity: u8);
     fn create_letter(self: @TContractState, position: u8, value: felt252);
+    fn create_word(self: @TContractState, word: [felt252; 5]);
+
 }
 
 // Contracts
@@ -77,6 +79,10 @@ mod actions {
 
         fn create_letter(self: @ContractState, position: u8, value: felt252) {
             self.playable.create_letter(self.world(), position, value)
+        }
+
+        fn create_word(self: @ContractState, word: [felt252; 5]) {
+            self.playable.create_word(self.world(), word)
         }
     }
 }

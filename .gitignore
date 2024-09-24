@@ -3,3 +3,4 @@ frontend/dist
 
 contracts/manifests
 contracts/target
+contracts/indexer.db

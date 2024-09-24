@@ -30,8 +30,8 @@ pub struct Dungeon {
 #[derive(Copy, Drop, Serde)]
 #[dojo::model]
 pub struct Letter {
-    pub placed_by: ContractAddress,
     #[key]
     pub position: u8,
+    pub placed_by: ContractAddress,
     pub value: felt252,
 }
