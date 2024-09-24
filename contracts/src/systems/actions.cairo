@@ -17,6 +17,7 @@ trait IActions<TContractState> {
     fn create_letter(self: @TContractState, position: u8, value: felt252);
     fn create_word(self: @TContractState, word: [felt252; 5]);
     fn guess_word(self: @TContractState, word: [felt252; 5]);
+    fn verify_guess(self: @TContractState);
 
 }
 
@@ -88,6 +89,10 @@ mod actions {
 
         fn guess_word(self: @ContractState, word: [felt252; 5]) {
             self.playable.guess_word(self.world(), word)
+        }
+
+        fn verify_guess(self: @ContractState) {
+            self.playable.verify_guess(self.world());
         }
     }
 }

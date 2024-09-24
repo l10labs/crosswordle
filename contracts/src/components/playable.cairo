@@ -180,5 +180,47 @@ mod PlayableComponent {
                 index += 1;
             }
         }
+
+        fn verify_guess(
+            self: @ComponentState<TContractState>,
+            world: IWorldDispatcher,
+        ) {
+            let store: Store = StoreTrait::new(world);
+            let player_id = get_caller_address();
+
+            let mut wordle_progress_array = [ false, false, false, false, false ].span();
+
+            let mut guess_index: u32 = 0;
+            while guess_index < 5 {
+                let position: u8 = guess_index.try_into().unwrap();
+                let guess_letter = store.get_letter(position, true);
+
+                let mut progress_index: u32 = 0;
+                while progress_index < 5 {
+                    if !wordle_progress_array[progress_index] {
+                        let index = progress_index.try_into().unwrap();
+                        let wordle_letter = store.get_letter(index, false);
+                        let result = LetterTrait::compare_letters(wordle_letter, guess_letter);
+
+                        if result == 2 {
+                            let color = LetterTrait::green_color_at_position(index);
+                            store.set_color(color);
+                            wordle_progress_array[progress_index] = true;
+                        } else if result == 1 {
+                            let color = LetterTrait::yellow_color_at_position(index);
+                            store.set_color(color);
+                            wordle_progress_array[index] = true;
+                        } else {
+                            let color = LetterTrait::gray_color_at_position(index);
+                            store.set_color(color);
+                        }
+                        
+                    }
+                    progress_index += 1;
+                }
+                guess_index += 1;
+            }
+
+        }
     }
 }

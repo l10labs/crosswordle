@@ -51,4 +51,33 @@ impl LetterImpl of LetterTrait {
 
         Letter { placed_by, position, value, is_user_guess: true }
     }
+
+    fn compare_letters(wordle_letter: Letter, guess_letter: Letter) -> u8 {
+        let is_same_letter = wordle_letter.value == guess_letter.value;
+        let is_same_position = wordle_letter.position == guess_letter.position;
+
+        if is_same_letter && is_same_position {
+            return 2;
+        } else if is_same_letter {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    fn green_color_at_position(position: u8) -> Color {
+        assert(position < 5, errors::POSITION_NOT_WITHIN_BOUNDS);
+        Color { position, color: 2 }
+    }
+
+    fn yellow_color_at_position(position: u8) -> Color {
+        assert(position < 5, errors::POSITION_NOT_WITHIN_BOUNDS);
+        Color { position, color: 1 }
+    }
+
+    fn gray_color_at_position(position: u8) -> Color {
+        assert(position < 5, errors::POSITION_NOT_WITHIN_BOUNDS);
+        Color { position, color: 0 }
+    }
+
 }

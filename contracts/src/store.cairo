@@ -72,4 +72,9 @@ impl StoreImpl of StoreTrait {
     fn set_color(self: Store, color: Color) {
         set!(self.world, (color))
     }
+
+    #[inline]
+    fn get_color(self: Store, position: u8) -> Color {
+        get!(self.world, (position), (Color))
+    }
 }
