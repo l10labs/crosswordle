@@ -16,6 +16,7 @@ trait IActions<TContractState> {
     fn heal(self: @TContractState, quantity: u8);
     fn create_letter(self: @TContractState, position: u8, value: felt252);
     fn create_word(self: @TContractState, word: [felt252; 5]);
+    fn guess_word(self: @TContractState, word: [felt252; 5]);
 
 }
 
@@ -83,6 +84,10 @@ mod actions {
 
         fn create_word(self: @ContractState, word: [felt252; 5]) {
             self.playable.create_word(self.world(), word)
+        }
+
+        fn guess_word(self: @ContractState, word: [felt252; 5]) {
+            self.playable.guess_word(self.world(), word)
         }
     }
 }

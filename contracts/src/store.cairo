@@ -60,4 +60,9 @@ impl StoreImpl of StoreTrait {
     fn set_letter(self: Store, letter: Letter) {
         set!(self.world, (letter))
     }
+
+    #[inline]
+    fn get_letter(self: Store, position: u8, is_user_guess: bool) -> Letter {
+        get!(self.world, (position, is_user_guess), (Letter))
+    }
 }

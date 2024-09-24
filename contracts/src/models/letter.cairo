@@ -21,7 +21,7 @@ mod errors {
 #[generate_trait]
 impl LetterImpl of LetterTrait {
     #[inline]
-    fn new(placed_by: ContractAddress, position: u8, value: felt252) -> Letter {
+    fn new_wordle(placed_by: ContractAddress, position: u8, value: felt252) -> Letter {
         let letter_in_uint: u256 = value.into();
         let lower_bound: u256 = 'a'.into();
         let upper_bound: u256 = 'z'.into();
@@ -30,6 +30,18 @@ impl LetterImpl of LetterTrait {
         assert(within_bounds, errors::LETTER_NOT_WITHIN_BOUNDS);
         assert(position < 5, errors::POSITION_NOT_WITHIN_BOUNDS);
 
-        Letter { placed_by, position, value }
+        Letter { placed_by, position, value, is_user_guess: false }
+    }
+
+    fn new_guess(placed_by: ContractAddress, position: u8, value: felt252) -> Letter {
+        let letter_in_uint: u256 = value.into();
+        let lower_bound: u256 = 'a'.into();
+        let upper_bound: u256 = 'z'.into();
+        let within_bounds: bool = letter_in_uint >= lower_bound && letter_in_uint <= upper_bound;
+
+        assert(within_bounds, errors::LETTER_NOT_WITHIN_BOUNDS);
+        assert(position < 5, errors::POSITION_NOT_WITHIN_BOUNDS);
+
+        Letter { placed_by, position, value, is_user_guess: true }
     }
 }

@@ -32,6 +32,8 @@ pub struct Dungeon {
 pub struct Letter {
     #[key]
     pub position: u8,
+    #[key]
+    pub is_user_guess: bool,
     pub placed_by: ContractAddress,
     pub value: felt252,
 }
