@@ -23,9 +23,16 @@ impl Plugin for ToriiPlugin {
 
 fn generate_word_entities(mut commands: Commands) {
     let random_5_letter_words = [
-        "apple", "beach", "candy", "dough", "eagle", "fairy", "giant", "happy", "igloo", "jelly",
-        "kitty", "lucky", "mango", "noble", "olive", "panda", "queen", "robin", "sunny", "tiger",
-        "umbra", "vivid", "wacky", "xenon", "yacht", "zebra",
+        "acorn", "amber", "apple", "aroma", "beach", "blaze", "bride", "broom", "candy", "chime",
+        "cloud", "crave", "daisy", "dough", "drape", "dwarf", "eagle", "eerie", "elbow", "ember",
+        "fairy", "flaky", "flute", "frown", "giant", "glide", "goofy", "grape", "happy", "hazel",
+        "hiker", "hound", "ideal", "igloo", "image", "ivory", "jazzy", "jelly", "joker", "jumbo",
+        "karma", "kites", "kitty", "koala", "lapse", "lemon", "llama", "lucky", "mango", "maple",
+        "mirth", "moose", "night", "ninja", "noble", "nudge", "oasis", "ocean", "olive", "onion",
+        "panda", "peach", "pizza", "plume", "quilt", "quick", "quiet", "queen", "razor", "rhyme",
+        "river", "robin", "spicy", "storm", "sunny", "swirl", "tango", "tiger", "torch", "tulip",
+        "ultra", "umbra", "unity", "usher", "viper", "vivid", "voice", "vowel", "wacky", "wagon",
+        "waltz", "whale", "xenon", "yacht", "yield", "youth", "yummy", "zesty", "zonal", "zebra",
     ];
 
     // random number between 0 and 25:
