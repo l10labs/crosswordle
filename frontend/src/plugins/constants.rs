@@ -2,6 +2,8 @@ use bevy::math::Vec3;
 
 pub const MULTIPLIER: f32 = 20.;
 pub const SCALE: Vec3 = Vec3::splat(1.3);
+pub const TEXT_SCALE: Vec3 = Vec3::splat(1.);
+pub const LOGO_SCALE: Vec3 = Vec3::splat(0.15);
 pub const HIDDEN_INDEX: usize = 6;
 pub const TILE_HEIGHT: f32 = 1.;
 pub const COLOR_HEIGHT: f32 = 1.1;

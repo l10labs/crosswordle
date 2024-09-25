@@ -3,14 +3,20 @@ use rand::Rng;
 
 use crate::manual_bindgen::{Letter, LetterColor};
 
+use super::game_states::GameStates;
+
 pub struct ToriiPlugin;
 impl Plugin for ToriiPlugin {
     fn build(&self, app: &mut App) {
+        // app.add_systems(
+        //     Update,
+        //     (clear_words, generate_word_entities, display_words)
+        //         .chain()
+        //         .run_if(input_just_pressed(KeyCode::Space)),
+        // );
         app.add_systems(
-            Update,
-            (clear_words, generate_word_entities, display_words)
-                .chain()
-                .run_if(input_just_pressed(KeyCode::Space)),
+            OnEnter(GameStates::WordleNew),
+            (clear_words, generate_word_entities, display_words).chain(),
         );
     }
 }
