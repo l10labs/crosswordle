@@ -2,14 +2,17 @@ pub mod manual_bindgen;
 pub mod plugins;
 
 use bevy::{input::common_conditions::input_just_pressed, prelude::*};
-use plugins::{mock_torii::ToriiPlugin, visualize::VisualizeImagePlugin};
+use plugins::{
+    hacky_claudy::WordlePlugin, mock_torii::ToriiPlugin, visualize::VisualizeImagePlugin,
+};
 
 pub struct GamePlugin;
 impl Plugin for GamePlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(Startup, default_camera);
-        app.add_plugins(ToriiPlugin);
-        app.add_plugins(VisualizeImagePlugin);
+        // app.add_plugins(ToriiPlugin);
+        // app.add_plugins(VisualizeImagePlugin);
+        app.add_plugins(WordlePlugin);
         app.add_systems(
             Update,
             display_entity_count.run_if(input_just_pressed(KeyCode::Space)),
@@ -19,7 +22,7 @@ impl Plugin for GamePlugin {
 
 fn default_camera(mut commands: Commands) {
     let mut camera_bundle = Camera2dBundle::default();
-    camera_bundle.projection.scale = 0.15;
+    // camera_bundle.projection.scale = 0.15;
     commands.spawn(camera_bundle);
 }
 
