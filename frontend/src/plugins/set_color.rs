@@ -1,4 +1,4 @@
-use bevy::{input::common_conditions::input_just_pressed, prelude::*, transform::commands};
+use bevy::{input::common_conditions::input_just_pressed, prelude::*};
 
 use crate::manual_bindgen::Letter;
 
@@ -21,6 +21,12 @@ impl Plugin for SetColorPlugin {
         app.add_systems(
             OnExit(GameStates::WordleSolved),
             (reset_colors, remove_old_colors),
+        );
+        app.add_systems(
+            Update,
+            (reset_colors, remove_old_colors).run_if(
+                in_state(GameStates::WordleNew).and_then(input_just_pressed(KeyCode::Escape)),
+            ),
         );
     }
 }

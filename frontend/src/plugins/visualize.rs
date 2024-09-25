@@ -1,8 +1,11 @@
-use bevy::{prelude::*, utils::HashMap};
+use bevy::{input::common_conditions::input_just_pressed, prelude::*, utils::HashMap};
 
 use crate::manual_bindgen::{Letter, LetterColor};
 
-use super::constants::{HIDDEN_INDEX, LETTER_HEIGHT, MULTIPLIER, SCALE, TILE_HEIGHT};
+use super::{
+    constants::{HIDDEN_INDEX, LETTER_HEIGHT, MULTIPLIER, SCALE, TILE_HEIGHT},
+    game_states::GameStates,
+};
 
 pub struct VisualizeImagePlugin;
 impl Plugin for VisualizeImagePlugin {
@@ -19,6 +22,12 @@ impl Plugin for VisualizeImagePlugin {
         app.add_systems(
             Update,
             spawn_letter.run_if(in_state(VisualStates::RenderLetters)),
+        );
+        app.add_systems(
+            Update,
+            (reset_state).run_if(
+                in_state(GameStates::WordleNew).and_then(input_just_pressed(KeyCode::Escape)),
+            ),
         );
     }
 }
@@ -43,6 +52,9 @@ struct LetterTextureAtlas {
     texture: Handle<Image>,
     layout: Handle<TextureAtlasLayout>,
 }
+
+#[derive(Debug, Component)]
+struct BackgroundTile;
 
 fn create_texture_atlas(
     asset_server: Res<AssetServer>,
@@ -100,7 +112,7 @@ fn spawn_tile_background(
             index: HIDDEN_INDEX,
         };
 
-        commands.spawn((keys_sprite, hidden_texture));
+        commands.spawn((keys_sprite, hidden_texture, BackgroundTile));
     }
     next_render_state.set(VisualStates::RenderLetters);
 }
@@ -143,6 +155,17 @@ fn spawn_letter(
         if letter.is_user_guess {
             commands.entity(id).insert((letters_sprite, solved_texture));
         }
+    }
+}
+
+fn reset_state(
+    mut next_render_state: ResMut<NextState<VisualStates>>,
+    query: Query<Entity, With<BackgroundTile>>,
+    mut commands: Commands,
+) {
+    next_render_state.set(VisualStates::Start);
+    for entity in query.iter() {
+        commands.entity(entity).despawn();
     }
 }
 

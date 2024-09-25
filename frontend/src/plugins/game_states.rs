@@ -1,4 +1,6 @@
-use bevy::{input::common_conditions::input_just_pressed, prelude::*};
+use bevy::{ecs::query, input::common_conditions::input_just_pressed, prelude::*};
+
+use crate::manual_bindgen::Letter;
 
 use super::set_color::{GuessResult, LetterStatus};
 
@@ -24,6 +26,10 @@ impl Plugin for GameStatesPlugin {
                         .or_else(input_just_pressed(KeyCode::ShiftRight)),
                 ),
             ),
+        );
+        app.add_systems(
+            Update,
+            restart_game.run_if(input_just_pressed(KeyCode::Escape)),
         );
     }
 }
@@ -58,4 +64,17 @@ fn next_new_word(mut next_state: ResMut<NextState<GameStates>>, result: Res<Gues
     info!("TIME TO START THE NEXT NEW LEVEL!");
 
     next_state.set(GameStates::WordleNew);
+}
+
+fn restart_game(
+    mut next_state: ResMut<NextState<GameStates>>,
+    query: Query<(Entity, &Letter)>,
+    mut commands: Commands,
+) {
+    info!("Restarting the game!");
+    for (id, letter) in query.iter() {
+        info!("Despawning entities: {:?}", letter);
+        commands.entity(id).despawn();
+    }
+    next_state.set(GameStates::StartGame);
 }

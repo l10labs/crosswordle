@@ -1,5 +1,7 @@
 use bevy::{
+    core_pipeline::core_2d::graph::input,
     input::{
+        common_conditions::input_just_pressed,
         keyboard::{Key, KeyboardInput},
         ButtonState,
     },
@@ -19,6 +21,10 @@ impl Plugin for GuessPlugin {
             input_letter_guess.run_if(in_state(GameStates::WordleNew)),
         );
         app.add_systems(OnExit(GameStates::WordleSolved), restart_level);
+        app.add_systems(
+            Update,
+            restart_level.run_if(input_just_pressed(KeyCode::Escape)),
+        );
     }
 }
 
