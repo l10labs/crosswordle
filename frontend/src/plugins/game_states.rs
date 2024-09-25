@@ -8,11 +8,22 @@ impl Plugin for GameStatesPlugin {
         app.init_state::<GameStates>();
         app.add_systems(
             Update,
-            start_game.run_if(input_just_pressed(KeyCode::Space)),
+            start_game.run_if(
+                in_state(GameStates::StartGame).and_then(input_just_pressed(KeyCode::Space)),
+            ),
         );
         app.add_systems(
             Update,
             complete_level.run_if(in_state(GameStates::WordleNew)),
+        );
+        app.add_systems(
+            Update,
+            start_game.run_if(
+                in_state(GameStates::WordleSolved).and_then(
+                    input_just_pressed(KeyCode::ShiftLeft)
+                        .or_else(input_just_pressed(KeyCode::ShiftRight)),
+                ),
+            ),
         );
     }
 }
@@ -41,4 +52,8 @@ fn complete_level(mut next_state: ResMut<NextState<GameStates>>, result: Res<Gue
     if should_advance {
         next_state.set(GameStates::WordleSolved);
     }
+}
+
+fn next_new_word(mut next_state: ResMut<NextState<GameStates>>, result: Res<GuessResult>) {
+    info!("TIME TO START THE NEXT NEW LEVEL!");
 }

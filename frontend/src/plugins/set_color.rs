@@ -1,9 +1,9 @@
-use bevy::{input::common_conditions::input_just_pressed, prelude::*};
+use bevy::{input::common_conditions::input_just_pressed, prelude::*, transform::commands};
 
 use crate::manual_bindgen::Letter;
 
 use super::{
-    constants::{COLOR_HEIGHT, MULTIPLIER, SCALE, TILE_HEIGHT},
+    constants::{COLOR_HEIGHT, MULTIPLIER, SCALE},
     visualize::KeysTextureAtlas,
 };
 
@@ -13,7 +13,7 @@ impl Plugin for SetColorPlugin {
         app.add_systems(Startup, init_guess);
         app.add_systems(
             Update,
-            (check_guess, spawn_color)
+            (check_guess, remove_old_colors, spawn_color)
                 .chain()
                 .run_if(input_just_pressed(KeyCode::Enter)),
         );
@@ -91,6 +91,9 @@ fn compare_guess(answer: &[char], guess: &[char]) -> Vec<LetterStatus> {
     result
 }
 
+#[derive(Debug, Component)]
+struct ColorImage;
+
 fn spawn_color(result: Res<GuessResult>, keys_img: Res<KeysTextureAtlas>, mut commands: Commands) {
     let guess_result = result.0.clone();
     let total_width = MULTIPLIER * (5 as f32 - 1.0);
@@ -123,6 +126,12 @@ fn spawn_color(result: Res<GuessResult>, keys_img: Res<KeysTextureAtlas>, mut co
             index: texture_index,
         };
 
-        commands.spawn((keys_sprite, color_texture));
+        commands.spawn((keys_sprite, color_texture, ColorImage));
+    }
+}
+
+fn remove_old_colors(query: Query<Entity, With<ColorImage>>, mut commands: Commands) {
+    for entity in query.iter() {
+        commands.entity(entity).despawn();
     }
 }

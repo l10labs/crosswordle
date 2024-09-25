@@ -21,7 +21,7 @@ impl Plugin for GamePlugin {
         app.add_plugins(GameUiPlugin);
         app.add_systems(
             Update,
-            display_entity_count.run_if(input_just_pressed(KeyCode::Space)),
+            display_entity_count.run_if(input_just_pressed(KeyCode::Tab)),
         );
     }
 }
