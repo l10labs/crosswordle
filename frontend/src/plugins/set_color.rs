@@ -10,6 +10,7 @@ use super::{
 pub struct SetColorPlugin;
 impl Plugin for SetColorPlugin {
     fn build(&self, app: &mut App) {
+        app.add_systems(Startup, init_guess);
         app.add_systems(
             Update,
             (check_guess, spawn_color)
@@ -29,7 +30,18 @@ pub enum LetterStatus {
 #[derive(Resource)]
 pub struct GuessResult(pub Vec<LetterStatus>);
 
-fn check_guess(query: Query<&Letter>, mut commands: Commands) {
+fn init_guess(mut commands: Commands) {
+    let init_guess = vec![
+        LetterStatus::Grey,
+        LetterStatus::Grey,
+        LetterStatus::Grey,
+        LetterStatus::Grey,
+        LetterStatus::Grey,
+    ];
+    commands.insert_resource(GuessResult(init_guess));
+}
+
+fn check_guess(query: Query<&Letter>, mut commands: Commands, mut result: ResMut<GuessResult>) {
     let mut answer: Vec<char> = vec![];
     let mut guess: Vec<char> = vec![];
 
@@ -43,10 +55,11 @@ fn check_guess(query: Query<&Letter>, mut commands: Commands) {
             }
         }
 
-        let result = compare_guess(&answer, &guess);
+        let new_result = compare_guess(&answer, &guess);
 
-        info!("Guess Result: {:?}", result);
-        commands.insert_resource(GuessResult(result));
+        info!("Guess Result: {:?}", new_result);
+        // commands.insert_resource(GuessResult(result));
+        result.0 = new_result;
     }
 }
 

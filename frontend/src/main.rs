@@ -10,7 +10,7 @@ fn main() {
                     title: "CrossWordle".to_string(), // ToDo
                     // Bind to canvas included in `index.html`
                     canvas: Some("#bevy".to_owned()),
-                    fit_canvas_to_parent: true,
+                    fit_canvas_to_parent: false,
                     // Tells wasm not to override default event handling, like F5 and Ctrl+R
                     prevent_default_event_handling: false,
                     ..default()
@@ -23,7 +23,7 @@ fn main() {
             })
             .set(ImagePlugin::default_nearest()),
     );
-    
+
     app.add_plugins(GamePlugin);
     app.run();
 }
