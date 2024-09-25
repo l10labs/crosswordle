@@ -1,4 +1,4 @@
-use bevy::{input::common_conditions::input_just_pressed, prelude::*};
+use bevy::prelude::*;
 use rand::Rng;
 
 use crate::manual_bindgen::{Letter, LetterColor};

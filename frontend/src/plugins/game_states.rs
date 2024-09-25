@@ -18,7 +18,7 @@ impl Plugin for GameStatesPlugin {
         );
         app.add_systems(
             Update,
-            start_game.run_if(
+            next_new_word.run_if(
                 in_state(GameStates::WordleSolved).and_then(
                     input_just_pressed(KeyCode::ShiftLeft)
                         .or_else(input_just_pressed(KeyCode::ShiftRight)),
@@ -56,4 +56,6 @@ fn complete_level(mut next_state: ResMut<NextState<GameStates>>, result: Res<Gue
 
 fn next_new_word(mut next_state: ResMut<NextState<GameStates>>, result: Res<GuessResult>) {
     info!("TIME TO START THE NEXT NEW LEVEL!");
+
+    next_state.set(GameStates::WordleNew);
 }

@@ -4,6 +4,7 @@ use crate::manual_bindgen::Letter;
 
 use super::{
     constants::{COLOR_HEIGHT, MULTIPLIER, SCALE},
+    game_states::GameStates,
     visualize::KeysTextureAtlas,
 };
 
@@ -16,6 +17,10 @@ impl Plugin for SetColorPlugin {
             (check_guess, remove_old_colors, spawn_color)
                 .chain()
                 .run_if(input_just_pressed(KeyCode::Enter)),
+        );
+        app.add_systems(
+            OnExit(GameStates::WordleSolved),
+            (reset_colors, remove_old_colors),
         );
     }
 }
@@ -134,4 +139,14 @@ fn remove_old_colors(query: Query<Entity, With<ColorImage>>, mut commands: Comma
     for entity in query.iter() {
         commands.entity(entity).despawn();
     }
+}
+
+fn reset_colors(mut result: ResMut<GuessResult>) {
+    result.0 = vec![
+        LetterStatus::Grey,
+        LetterStatus::Grey,
+        LetterStatus::Grey,
+        LetterStatus::Grey,
+        LetterStatus::Grey,
+    ];
 }

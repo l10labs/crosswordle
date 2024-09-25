@@ -8,37 +8,23 @@ use bevy::{
 
 use crate::manual_bindgen::Letter;
 
+use super::game_states::GameStates;
+
 pub struct GuessPlugin;
 impl Plugin for GuessPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(Startup, init_position);
-        app.add_systems(Update, input_letter_guess);
+        app.add_systems(
+            Update,
+            input_letter_guess.run_if(in_state(GameStates::WordleNew)),
+        );
+        app.add_systems(OnExit(GameStates::WordleSolved), restart_level);
     }
 }
 
 // Define a resource to keep track of the current position
 #[derive(Resource)]
 struct CursorPosition(u8);
-
-// // System to spawn letters when keys are pressed
-// fn spawn_letter_system(
-//     mut commands: Commands,
-//     mut current_position: ResMut<CursorPosition>,
-//     keyboard_input: Res<Input<KeyCode>>,
-// ) {
-//     for key in keyboard_input.get_just_pressed() {
-//         if let Some(char_value) = key_to_char(key) {
-//             commands.spawn(Letter {
-//                 position: current_position.0,
-//                 is_user_guess: true,
-//                 value: char_value,
-//             });
-
-//             // Increment the current position
-//             current_position.0 += 1;
-//         }
-//     }
-// }
 
 fn init_position(mut commands: Commands) {
     commands.insert_resource(CursorPosition(0));
@@ -96,6 +82,21 @@ fn input_letter_guess(
                 }
             }
             _ => {}
+        }
+    }
+}
+
+fn restart_level(
+    mut cursor_position: ResMut<CursorPosition>,
+    mut commands: Commands,
+    query: Query<(Entity, &Letter)>,
+) {
+    cursor_position.0 = 0;
+    info!("Cursor position: {}", cursor_position.0);
+
+    for (entity, letter) in query.iter() {
+        if letter.is_user_guess {
+            commands.entity(entity).despawn();
         }
     }
 }
