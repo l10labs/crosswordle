@@ -6,6 +6,8 @@ use bevy::{
     prelude::*,
 };
 
+use crate::manual_bindgen::Letter;
+
 pub struct GuessPlugin;
 impl Plugin for GuessPlugin {
     fn build(&self, app: &mut App) {
@@ -44,8 +46,9 @@ fn init_position(mut commands: Commands) {
 
 fn input_letter_guess(
     mut evr_kbd: EventReader<KeyboardInput>,
-    // mut cursor_position: ResMut<CursorPosition>,
-    // mut letter_guess_query: Query<&mut LetterGuess>,
+    mut commands: Commands,
+    mut cursor_position: ResMut<CursorPosition>,
+    letter_guess_query: Query<(Entity, &Letter)>,
 ) {
     for ev in evr_kbd.read() {
         if ev.state == ButtonState::Released {
@@ -62,21 +65,36 @@ fn input_letter_guess(
                 if (char_code >= lower_a && char_code <= lower_z)
                     || (char_code >= upper_a && char_code <= upper_z)
                 {
-                    println!("Typed: {}", c);
-                    // if letter.letters.len() < 5 {
-                    //     letter.letters.push(c.to_lowercase().to_string());
-                    // } else {
-                    //     println!("Already typed 5 letters!");
-                    // }
+                    info!("Typed: {}", c);
+                    if cursor_position.0 < 5 {
+                        commands.spawn(Letter {
+                            position: cursor_position.0,
+                            is_user_guess: true,
+                            value: c.chars().next().unwrap().to_ascii_lowercase(),
+                        });
+                        cursor_position.0 += 1;
+                        info!("Cursor position: {}", cursor_position.0);
+                    } else {
+                        error!("Already typed 5 letters!");
+                    }
                 } else {
-                    println!("Invalid character: {}", c);
+                    error!("Invalid character: {}", c);
                 }
             }
-            // Key::Backspace => {
-            //     if !letter.letters.is_empty() {
-            //         letter.letters.pop();
-            //     }
-            // }
+            Key::Backspace => {
+                if cursor_position.0 > 0 {
+                    for (entity, letter) in letter_guess_query.iter() {
+                        let is_position = letter.position == cursor_position.0 - 1;
+                        let is_user_guess = letter.is_user_guess;
+
+                        if is_position && is_user_guess {
+                            commands.entity(entity).despawn();
+                        }
+                    }
+                    cursor_position.0 -= 1;
+                    info!("Cursor position: {}", cursor_position.0);
+                }
+            }
             _ => {}
         }
     }
