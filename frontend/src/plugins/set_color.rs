@@ -16,7 +16,9 @@ impl Plugin for SetColorPlugin {
             Update,
             (check_guess, remove_old_colors, spawn_color)
                 .chain()
-                .run_if(input_just_pressed(KeyCode::Enter)),
+                .run_if(
+                    in_state(GameStates::WordleNew).and_then(input_just_pressed(KeyCode::Enter)),
+                ),
         );
         app.add_systems(
             OnExit(GameStates::WordleSolved),
