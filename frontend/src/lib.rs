@@ -2,7 +2,10 @@ pub mod manual_bindgen;
 pub mod plugins;
 
 use bevy::{input::common_conditions::input_just_pressed, prelude::*};
-use plugins::{guess::GuessPlugin, mock_torii::ToriiPlugin, visualize::VisualizeImagePlugin};
+use plugins::{
+    guess::GuessPlugin, mock_torii::ToriiPlugin, set_color::SetColorPlugin,
+    visualize::VisualizeImagePlugin,
+};
 
 pub struct GamePlugin;
 impl Plugin for GamePlugin {
@@ -11,6 +14,7 @@ impl Plugin for GamePlugin {
         app.add_plugins(ToriiPlugin);
         app.add_plugins(VisualizeImagePlugin);
         app.add_plugins(GuessPlugin);
+        app.add_plugins(SetColorPlugin);
         app.add_systems(
             Update,
             display_entity_count.run_if(input_just_pressed(KeyCode::Space)),
