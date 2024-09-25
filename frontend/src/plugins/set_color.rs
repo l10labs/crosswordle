@@ -2,12 +2,19 @@ use bevy::{input::common_conditions::input_just_pressed, prelude::*};
 
 use crate::manual_bindgen::Letter;
 
+use super::{
+    constants::{COLOR_HEIGHT, MULTIPLIER, SCALE, TILE_HEIGHT},
+    visualize::KeysTextureAtlas,
+};
+
 pub struct SetColorPlugin;
 impl Plugin for SetColorPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(
             Update,
-            check_guess.run_if(input_just_pressed(KeyCode::Enter)),
+            (check_guess, spawn_color)
+                .chain()
+                .run_if(input_just_pressed(KeyCode::Enter)),
         );
     }
 }
@@ -69,4 +76,40 @@ fn compare_guess(answer: &[char], guess: &[char]) -> Vec<LetterStatus> {
     }
 
     result
+}
+
+fn spawn_color(result: Res<GuessResult>, keys_img: Res<KeysTextureAtlas>, mut commands: Commands) {
+    let guess_result = result.0.clone();
+    let total_width = MULTIPLIER * (5 as f32 - 1.0);
+    let start_x = -total_width / 2.0;
+
+    for (i, status) in guess_result.iter().enumerate() {
+        let texture_index: usize;
+
+        match status {
+            LetterStatus::Grey => texture_index = 6,
+            LetterStatus::Yellow => texture_index = 7,
+            LetterStatus::Green => texture_index = 8,
+        }
+
+        let x = start_x + (i as f32 * MULTIPLIER);
+
+        let keys_sprite = SpriteBundle {
+            transform: Transform::from_translation(Vec3::new(
+                // x * MULTIPLIER,
+                x,
+                ((0) as f32) * MULTIPLIER,
+                COLOR_HEIGHT,
+            ))
+            .with_scale(SCALE),
+            texture: keys_img.texture.clone(),
+            ..default()
+        };
+        let color_texture = TextureAtlas {
+            layout: keys_img.layout.clone(),
+            index: texture_index,
+        };
+
+        commands.spawn((keys_sprite, color_texture));
+    }
 }

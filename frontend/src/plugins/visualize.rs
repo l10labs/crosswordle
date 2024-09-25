@@ -33,9 +33,9 @@ enum VisualStates {
 }
 
 #[derive(Debug, Resource)]
-struct KeysTextureAtlas {
-    texture: Handle<Image>,
-    layout: Handle<TextureAtlasLayout>,
+pub struct KeysTextureAtlas {
+    pub texture: Handle<Image>,
+    pub layout: Handle<TextureAtlasLayout>,
 }
 
 #[derive(Debug, Resource)]
