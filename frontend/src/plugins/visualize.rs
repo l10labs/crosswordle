@@ -2,7 +2,7 @@ use bevy::{prelude::*, utils::HashMap};
 
 use crate::manual_bindgen::{Letter, LetterColor};
 
-use super::constants::{HIDDEN_INDEX, MULTIPLIER, SCALE};
+use super::constants::{HIDDEN_INDEX, LETTER_HEIGHT, MULTIPLIER, SCALE, TILE_HEIGHT};
 
 pub struct VisualizeImagePlugin;
 impl Plugin for VisualizeImagePlugin {
@@ -14,6 +14,11 @@ impl Plugin for VisualizeImagePlugin {
         app.add_systems(
             Update,
             spawn_tile_background.run_if(in_state(VisualStates::RenderInitTileBackground)),
+        );
+        // app.add_systems(OnEnter(VisualStates::RenderLetters), spawn_letter);
+        app.add_systems(
+            Update,
+            spawn_letter.run_if(in_state(VisualStates::RenderLetters)),
         );
     }
 }
@@ -74,19 +79,17 @@ fn spawn_tile_background(
     mut next_render_state: ResMut<NextState<VisualStates>>,
     query: Query<(&Letter, &LetterColor)>,
 ) {
-    let spacing = 20.0; // Adjust this value to change the spacing between sprites
-    let total_width = spacing * (5 as f32 - 1.0);
+    let total_width = MULTIPLIER * (5 as f32 - 1.0);
     let start_x = -total_width / 2.0;
 
     for (letter, _letter_status) in query.iter() {
-        let x = start_x + (letter.position as f32 * spacing);
-        // let letter_value = letter.value.clone().to_string();
+        let x = start_x + (letter.position as f32 * MULTIPLIER);
         let keys_sprite = SpriteBundle {
             transform: Transform::from_translation(Vec3::new(
                 // x * MULTIPLIER,
                 x,
                 ((0) as f32) * MULTIPLIER,
-                1.,
+                TILE_HEIGHT,
             ))
             .with_scale(SCALE),
             texture: keys_img.texture.clone(),
@@ -102,58 +105,46 @@ fn spawn_tile_background(
     next_render_state.set(VisualStates::RenderLetters);
 }
 
-// fn spawn_default_sprite(
-//     mut commands: Commands,
-//     query: Query<(Entity, &Letter, &LetterColor), Without<ImageVisual>>,
-//     letter_map: Res<LetterMap>,
-//     keys_img: Res<KeysTextureAtlas>,
-//     letters_img: Res<LetterTextureAtlas>,
-// ) {
-//     for (entity_id, letter, _letter_status) in query.iter() {
-//         let letter_value = letter.mock_hash.clone().to_string();
-//         let keys_sprite = SpriteBundle {
-//             transform: Transform::from_translation(Vec3::new(
-//                 ((letter.position) as f32) * MULTIPLIER,
-//                 ((0) as f32) * MULTIPLIER,
-//                 1.,
-//             ))
-//             .with_scale(SCALE),
-//             texture: keys_img.texture.clone(),
-//             ..default()
-//         };
-//         let hidden_texture = TextureAtlas {
-//             layout: keys_img.layout.clone(),
-//             index: HIDDEN_INDEX,
-//         };
+fn spawn_letter(
+    query: Query<(Entity, &Letter), Without<TextureAtlas>>,
+    letters_img: Res<LetterTextureAtlas>,
+    letter_map: Res<LetterHashMap>,
+    mut commands: Commands,
+) {
+    let total_width = MULTIPLIER * (5 as f32 - 1.0);
+    let start_x = -total_width / 2.0;
 
-//         let letters_sprite = SpriteBundle {
-//             transform: Transform::from_translation(Vec3::new(
-//                 ((letter.position) as f32) * MULTIPLIER,
-//                 ((0) as f32) * MULTIPLIER,
-//                 0.,
-//             ))
-//             .with_scale(SCALE),
-//             texture: letters_img.texture.clone(),
-//             ..default()
-//         };
-//         let letter_index = letter_map.map.get(letter_value.as_str()).unwrap().clone() as usize;
+    for (id, letter) in query.iter() {
+        let x = start_x + (letter.position as f32 * MULTIPLIER);
 
-//         let solved_texture = TextureAtlas {
-//             layout: letters_img.layout.clone(),
-//             index: letter_index,
-//         };
+        let letters_sprite = SpriteBundle {
+            transform: Transform::from_translation(Vec3::new(
+                // x * MULTIPLIER,
+                x,
+                ((0) as f32) * MULTIPLIER,
+                LETTER_HEIGHT,
+            ))
+            .with_scale(SCALE),
+            texture: letters_img.texture.clone(),
+            ..default()
+        };
 
-//         let parent_entity = ParentEntity(entity_id);
+        let letter_index = letter_map
+            .map
+            .get(letter.value.clone().to_string().as_str())
+            .unwrap()
+            .clone() as usize;
 
-//         commands.spawn((keys_sprite, hidden_texture, parent_entity.clone(), KeyLayer));
-//         commands.spawn((letters_sprite, solved_texture, parent_entity, LetterLayer));
+        let solved_texture = TextureAtlas {
+            layout: letters_img.layout.clone(),
+            index: letter_index,
+        };
 
-//         commands.entity(entity_id).insert((ImageVisual {
-//             hidden: HIDDEN_INDEX,
-//             solved: letter_index,
-//         },));
-//     }
-// }
+        if letter.is_user_guess {
+            commands.entity(id).insert((letters_sprite, solved_texture));
+        }
+    }
+}
 
 #[derive(Debug, Resource)]
 pub struct LetterHashMap {
