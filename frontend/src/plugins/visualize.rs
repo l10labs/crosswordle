@@ -26,7 +26,9 @@ impl Plugin for VisualizeImagePlugin {
         app.add_systems(
             Update,
             (reset_state).run_if(
-                in_state(GameStates::WordleNew).and_then(input_just_pressed(KeyCode::Escape)),
+                in_state(GameStates::WordleNew)
+                    .or_else(in_state(GameStates::WordleSolved))
+                    .and_then(input_just_pressed(KeyCode::Escape)),
             ),
         );
     }
