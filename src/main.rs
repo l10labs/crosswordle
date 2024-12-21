@@ -1,5 +1,5 @@
 use bevy::{asset::AssetMetaCheck, prelude::*};
-use frontend::GamePlugin;
+use crosswordle::GamePlugin;
 
 fn main() {
     let mut app = App::new();

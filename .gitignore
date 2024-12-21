@@ -1,9 +1,7 @@
-frontend/target
-frontend/dist
-frontend/assets/sounds
+target
+dist
+assets/sounds
 
 contracts/manifests
 contracts/target
 contracts/indexer.db
-
-.DS_Store*
